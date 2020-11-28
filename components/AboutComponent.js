@@ -1,8 +1,33 @@
 import React, { Component } from 'react';
 import { ScrollView, Text, FlatList } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
 
-import { PARTNERS } from '../shared/partners';
+const mapStateToProps = (state) => {
+	return {
+		partners: state.partners,
+	};
+};
+
+class AboutComponent extends Component {
+	static navigationOptions = {
+		title: 'About Us',
+	};
+	render() {
+		const renderPartners = ({ item }) => {
+			return <ListItem title={item.name} subtitle={item.description} leftAvatar={{ source: { uri: baseUrl + item.image } }} />;
+		};
+		return (
+			<ScrollView>
+				<Mission />
+				<Card title='Community Partners'>
+					<FlatList data={this.props.partners.partners} renderItem={renderPartners} keyExtractor={(item) => item.id.toString()} />
+				</Card>
+			</ScrollView>
+		);
+	}
+}
 
 function Mission(props) {
 	return (
@@ -15,30 +40,5 @@ function Mission(props) {
 		</Card>
 	);
 }
-class AboutComponent extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			partners: PARTNERS,
-		};
-	}
 
-	static navigationOptions = {
-		title: 'About Us',
-	};
-	render() {
-		const renderPartners = ({ item }) => {
-			return <ListItem title={item.name} subtitle={item.description} leftAvatar={{ source: require('../images/bootstrap-logo.png') }} />;
-		};
-		return (
-			<ScrollView>
-				<Mission />
-				<Card title='Community Partners'>
-					<FlatList data={this.state.partners} renderItem={renderPartners} keyExtractor={(item) => item.id.toString()} />
-				</Card>
-			</ScrollView>
-		);
-	}
-}
-
-export default AboutComponent;
+export default connect(mapStateToProps)(AboutComponent);
