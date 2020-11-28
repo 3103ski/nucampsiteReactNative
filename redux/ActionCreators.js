@@ -37,6 +37,26 @@ export const addComments = (comments) => ({
 	payload: comments,
 });
 
+// User adding comments
+
+export const addComment = (newComment) => ({
+	type: ActionTypes.ADD_COMMENT,
+	payload: newComment,
+});
+
+export const postComment = (campsiteId, rating, author, text) => (dispatch) => {
+	setTimeout(() => {
+		const newComment = {
+			campsiteId: campsiteId,
+			rating: rating,
+			author: author,
+			text: text,
+			date: new Date(),
+		};
+		dispatch(addComment(newComment));
+	}, 2000);
+};
+
 // ******************************
 // 		CAMPSITES
 // ******************************

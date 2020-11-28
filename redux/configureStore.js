@@ -1,6 +1,8 @@
+// Redux
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
+// Reducers
 import { campsites } from './campsites';
 import { comments } from './comments';
 import { promotions } from './promotions';
