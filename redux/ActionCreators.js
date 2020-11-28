@@ -1,6 +1,10 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
 
+// ******************************
+// 		COMMENTS
+// ******************************
+
 export const fetchComments = () => (dispatch) => {
 	return fetch(baseUrl + 'comments')
 		.then(
@@ -32,6 +36,10 @@ export const addComments = (comments) => ({
 	type: ActionTypes.ADD_COMMENTS,
 	payload: comments,
 });
+
+// ******************************
+// 		CAMPSITES
+// ******************************
 
 export const fetchCampsites = () => (dispatch) => {
 	dispatch(campsitesLoading());
@@ -71,6 +79,10 @@ export const addCampsites = (campsites) => ({
 	payload: campsites,
 });
 
+// ******************************
+// 		PROMOTIONS
+// ******************************
+
 export const fetchPromotions = () => (dispatch) => {
 	dispatch(promotionsLoading());
 
@@ -109,6 +121,10 @@ export const addPromotions = (promotions) => ({
 	payload: promotions,
 });
 
+// ******************************
+// 		PARTNERS
+// ******************************
+
 export const fetchPartners = () => (dispatch) => {
 	dispatch(partnersLoading());
 
@@ -145,4 +161,19 @@ export const partnersFailed = (errMess) => ({
 export const addPartners = (partners) => ({
 	type: ActionTypes.ADD_PARTNERS,
 	payload: partners,
+});
+
+// ******************************
+// 		FAVORITES
+// ******************************
+
+export const postFavorite = (campsiteId) => (dispatch) => {
+	setTimeout(() => {
+		dispatch(addFavorite(campsiteId));
+	}, 2000);
+};
+
+export const addFavorite = (campsiteId) => ({
+	type: ActionTypes.ADD_FAVORITE,
+	payload: campsiteId,
 });
