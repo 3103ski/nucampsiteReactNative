@@ -28,12 +28,18 @@ const mapDispatchToProps = {
 
 function RenderCampsite(props) {
 	const { campsite } = props;
+
+	const view = React.createRef();
+
 	const recognizeDrag = ({ dx }) => (dx < -100 ? true : false);
 
 	const panResponder = PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
+		onPanResponderGrant: () => {
+			view.current.rubberBand(1000).then((endState) => console.log(endState.finished ? 'finished' : 'canceled'));
+		},
 		onPanResponderEnd: (e, gestureState) => {
-			// console.log(gestureState);
+			console.log(gestureState);
 			if (recognizeDrag(gestureState)) {
 				Alert.alert(
 					'Add Favorite',
@@ -52,12 +58,13 @@ function RenderCampsite(props) {
 					{ cancelable: false }
 				);
 			}
+			return true;
 		},
 	});
 
 	if (campsite) {
 		return (
-			<Animatable.View animation='fadeInDown' duration={2000} delay={1000} {...panResponder.panHandlers}>
+			<Animatable.View ref={view} animation='fadeInDown' duration={2000} delay={1000} {...panResponder.panHandlers}>
 				<Card featureTitle={campsite.name} image={{ uri: baseUrl + campsite.image }}>
 					<Text style={{ margin: 10 }}>{campsite.description}</Text>
 					<View style={styles.cardRow}>
@@ -110,6 +117,7 @@ class CampsiteInfo extends Component {
 	}
 
 	markFavorite(campsiteId) {
+		console.log('adding favorite', campsiteId);
 		this.props.postFavorite(campsiteId);
 	}
 
@@ -142,12 +150,7 @@ class CampsiteInfo extends Component {
 
 		return (
 			<ScrollView>
-				<RenderCampsite
-					onShowModal={() => this.toggleModal()}
-					favorite={this.props.favorites.includes(campsiteId)}
-					markFavorite={(campsiteId) => this.markFavorite(campsiteId)}
-					campsite={campsite}
-				/>
+				<RenderCampsite onShowModal={() => this.toggleModal()} favorite={this.props.favorites.includes(campsiteId)} markFavorite={() => this.markFavorite(campsiteId)} campsite={campsite} />
 				<RenderComments comments={comments} />
 				<Modal animationType={'slide'} transparent={false} visible={this.state.showModal} onRequestClose={() => this.toggleModal()}>
 					<View style={styles.modal}>
