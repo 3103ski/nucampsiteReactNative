@@ -17,6 +17,7 @@ import Directory from './DirectoryComponent';
 import CampsiteInfo from './CampsiteInfoComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
+import Favorites from './FavoritesComponent';
 
 // Components
 import Reservation from './ReservationComponent';
@@ -67,6 +68,24 @@ const DirectoryNavigator = createStackNavigator(
 				color: '#fff',
 			},
 		},
+	}
+);
+
+const FavoritesNavigator = createStackNavigator(
+	{
+		Favorites: { screen: Favorites },
+	},
+	{
+		defaultNavigationOptions: ({ navigation }) => ({
+			headerStyle: {
+				backgroundColor: '#5637DD',
+			},
+			headerTintColor: '#fff',
+			headerTitleStyle: {
+				color: '#fff',
+			},
+			headerLeft: <Icon name='heart' type='font-awesome' iconStyle={styles.stackIcon} onPress={() => navigation.toggleDrawer()} />,
+		}),
 	}
 );
 
@@ -161,6 +180,13 @@ const MainNavigator = createDrawerNavigator(
 			navigationOptions: {
 				drawerIcon: ({ tintColor }) => <Icon name='tree' type='font-awesome' size={24} color={tintColor} />,
 				drawerLabel: 'Make Reservation',
+			},
+		},
+		Favorites: {
+			screen: FavoritesNavigator,
+			navigationOptions: {
+				drawerIcon: ({ tintColor }) => <Icon name='heart' type='font-awesome' size={24} color={tintColor} />,
+				drawerLabel: 'Favorites',
 			},
 		},
 		About: {
