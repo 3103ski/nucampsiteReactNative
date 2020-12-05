@@ -1,10 +1,16 @@
 // React
 import React, { Component } from 'react';
-// Native
 import { Text, View, ScrollView, FlatList, Button, Modal, StyleSheet } from 'react-native';
+
+// Third Party
 import { Card, Icon, Rating, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
+import * as Animatable from 'react-native-animatable';
+
+// Constants
 import { baseUrl } from '../shared/baseUrl';
+
+// Action imports
 import { postFavorite, postComment } from '../redux/ActionCreators';
 
 const mapStateToProps = (state) => {
@@ -24,20 +30,22 @@ function RenderCampsite(props) {
 	const { campsite } = props;
 	if (campsite) {
 		return (
-			<Card featureTitle={campsite.name} image={{ uri: baseUrl + campsite.image }}>
-				<Text style={{ margin: 10 }}>{campsite.description}</Text>
-				<View style={styles.cardRow}>
-					<Icon
-						name={props.favorite ? 'heart' : 'heart-o'}
-						type='font-awesome'
-						color='#f50'
-						onPress={() => (props.favorite ? console.log('already liked') : props.markFavorite(campsite.id))}
-						raised
-						reverse
-					/>
-					<Icon name='pencil' type='font-awesome' color='#5637DD' onPress={() => props.onShowModal()} raised reverse />
-				</View>
-			</Card>
+			<Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+				<Card featureTitle={campsite.name} image={{ uri: baseUrl + campsite.image }}>
+					<Text style={{ margin: 10 }}>{campsite.description}</Text>
+					<View style={styles.cardRow}>
+						<Icon
+							name={props.favorite ? 'heart' : 'heart-o'}
+							type='font-awesome'
+							color='#f50'
+							onPress={() => (props.favorite ? console.log('already liked') : props.markFavorite(campsite.id))}
+							raised
+							reverse
+						/>
+						<Icon name='pencil' type='font-awesome' color='#5637DD' onPress={() => props.onShowModal()} raised reverse />
+					</View>
+				</Card>
+			</Animatable.View>
 		);
 	}
 	return <View />;
@@ -55,9 +63,11 @@ function RenderComments({ comments }) {
 	};
 
 	return (
-		<Card title='Comments'>
-			<FlatList data={comments} renderItem={renderCommentItem} keyExtractor={(item) => item.id.toString()} />
-		</Card>
+		<Animatable.View animation='fadeInUp' duration={2000} delay={1000}>
+			<Card title='Comments'>
+				<FlatList data={comments} renderItem={renderCommentItem} keyExtractor={(item) => item.id.toString()} />
+			</Card>
+		</Animatable.View>
 	);
 }
 
