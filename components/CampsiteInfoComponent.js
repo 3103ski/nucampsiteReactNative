@@ -1,6 +1,6 @@
 // React
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, Button, Modal, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, FlatList, Button, Modal, StyleSheet, Alert, PanResponder } from 'react-native';
 
 // Third Party
 import { Card, Icon, Rating, Input } from 'react-native-elements';
@@ -28,9 +28,37 @@ const mapDispatchToProps = {
 
 function RenderCampsite(props) {
 	const { campsite } = props;
+
+	const recognizeDrag = ({ dx }) => (dx < -100 ? true : false);
+	const panResponder = PanResponder.create({
+		onStartShouldSetPanResponder: () => true,
+		onPanResponderEnd: (e, gestureState) => {
+			console.log(gestureState);
+			if (recognizeDrag(gestureState)) {
+				console.log('test passed');
+				Alert.alert(
+					'Add Favorite',
+					'Are you sure you wish to add',
+					[
+						{
+							text: 'Cancel',
+							style: 'cancel',
+							onPress: () => console.log('Cancel Pressed'),
+						},
+						{
+							text: 'OK',
+							onPress: () => (props.favorite ? console.log('Is already favorite') : props.markFavorite()),
+						},
+					],
+					{ cancelable: false }
+				);
+			}
+		},
+	});
+
 	if (campsite) {
 		return (
-			<Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+			<Animatable.View animation='fadeInDown' duration={2000} delay={1000} {...panResponder.panHandlers}>
 				<Card featureTitle={campsite.name} image={{ uri: baseUrl + campsite.image }}>
 					<Text style={{ margin: 10 }}>{campsite.description}</Text>
 					<View style={styles.cardRow}>
@@ -112,6 +140,7 @@ class CampsiteInfo extends Component {
 		const campsiteId = this.props.navigation.getParam('campsiteId');
 		const campsite = this.props.campsites.campsites.filter((campsite) => campsite.id === campsiteId)[0];
 		const comments = this.props.comments.comments.filter((campsite) => campsite.campsiteId === campsiteId);
+
 		return (
 			<ScrollView>
 				<RenderCampsite
