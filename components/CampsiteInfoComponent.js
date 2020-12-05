@@ -28,14 +28,13 @@ const mapDispatchToProps = {
 
 function RenderCampsite(props) {
 	const { campsite } = props;
-
 	const recognizeDrag = ({ dx }) => (dx < -100 ? true : false);
+
 	const panResponder = PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
 		onPanResponderEnd: (e, gestureState) => {
-			console.log(gestureState);
+			// console.log(gestureState);
 			if (recognizeDrag(gestureState)) {
-				console.log('test passed');
 				Alert.alert(
 					'Add Favorite',
 					'Are you sure you wish to add',
