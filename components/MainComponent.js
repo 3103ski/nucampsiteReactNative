@@ -18,6 +18,7 @@ import CampsiteInfo from './CampsiteInfoComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
 import Favorites from './FavoritesComponent';
+import LoginComponent from './LoginComponent';
 
 // Components
 import Reservation from './ReservationComponent';
@@ -142,6 +143,23 @@ const ReservationNavigator = createStackNavigator(
 		}),
 	}
 );
+const LoginNavigator = createStackNavigator(
+	{
+		Login: { screen: LoginComponent },
+	},
+	{
+		defaultNavigationOptions: ({ navigation }) => ({
+			headerStyle: {
+				backgroundColor: '#5637DD',
+			},
+			headerTintColor: '#fff',
+			headerTitleStyle: {
+				color: '#fff',
+			},
+			headerLeft: <Icon name='sign-in' type='font-awesome' iconStyle={styles.stackIcon} onPress={() => navigation.toggleDrawer()} />,
+		}),
+	}
+);
 
 const CustomDrawerContentComponent = (props) => {
 	return (
@@ -163,6 +181,12 @@ const CustomDrawerContentComponent = (props) => {
 
 const MainNavigator = createDrawerNavigator(
 	{
+		Login: {
+			screen: LoginNavigator,
+			navigationOptions: {
+				drawerIcon: ({ tintColor }) => <Icon name='sign-in' type='font-awesome' size={24} color={tintColor} />,
+			},
+		},
 		Home: {
 			screen: HomeNavigator,
 			navigationOptions: {
@@ -205,6 +229,7 @@ const MainNavigator = createDrawerNavigator(
 		},
 	},
 	{
+		initialRouteName: 'Home',
 		drawerBackgroundColor: '#CEC8FF',
 		contentComponent: CustomDrawerContentComponent,
 	}
