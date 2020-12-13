@@ -1,6 +1,6 @@
 // React
 import React, { Component } from 'react';
-import { Text, View, ScrollView, FlatList, Button, Modal, StyleSheet, Alert, PanResponder } from 'react-native';
+import { Text, View, ScrollView, FlatList, Button, Modal, StyleSheet, Alert, PanResponder, Share } from 'react-native';
 
 // Third Party
 import { Card, Icon, Rating, Input } from 'react-native-elements';
@@ -66,6 +66,19 @@ function RenderCampsite(props) {
 		},
 	});
 
+	const shareCampsite = (title, message, url) => {
+		Share.share(
+			{
+				title,
+				message: `${title}: ${message} ${url}`,
+				url,
+			},
+			{
+				dialogTitle: 'Share ' + title,
+			}
+		);
+	};
+
 	if (campsite) {
 		return (
 			<Animatable.View ref={view} animation='fadeInDown' duration={2000} delay={1000} {...panResponder.panHandlers}>
@@ -81,6 +94,7 @@ function RenderCampsite(props) {
 							reverse
 						/>
 						<Icon name='pencil' type='font-awesome' color='#5637DD' onPress={() => props.onShowModal()} raised reverse />
+						<Icon name='share' type='font-awesome' color='#5637DD' onPress={() => shareCampsite(campsite.name, campsite.description, baseUrl + campsite.image)} raised reverse />
 					</View>
 				</Card>
 			</Animatable.View>
